@@ -18,6 +18,7 @@ const firebase = initializeApp(firebaseConfig);
 const db = getFirestore(firebase);
 const auth = getAuth(firebase);
 
+// Move isLoggedIn declaration to the top
 let isLoggedIn = false;
 
 // Login functionality
@@ -28,7 +29,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     // Successful login
-    isLoggedIn = true;
+    isLoggedIn = true; // Set to true on successful login
     document.getElementById('login-section').style.display = 'none';
     document.getElementById('notice-form').style.display = 'block';
     displayNotices();  // Display notices after login
