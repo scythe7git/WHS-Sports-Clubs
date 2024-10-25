@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Club Notices</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Sports Club Notices</h1>
+  
+  <div id="login-section">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <p id="login-message"></p>
+  </div>
+  
+  <div id="notice-form" style="display:none;">
+    <h2>Add a New Notice</h2>
+    <form id="addNoticeForm">
+      <label for="sport">Sport:</label>
+      <input type="text" id="sport" required><br><br>
+      
+      <label for="category">Senior or Junior:</label>
+      <select id="category">
+        <option value="Senior">Senior</option>
+        <option value="Junior">Junior</option>
+      </select><br><br>
+      
+      <label for="team">Team:</label>
+      <input type="text" id="team" required><br><br>
+      
+      <label for="time">Time:</label>
+      <input type="time" id="time" required><br><br>
+      
+      <label for="location">Location:</label>
+      <input type="text" id="location" required><br><br>
+      
+      <button type="submit">Add Notice</button>
+    </form>
+  </div>
+  
+  <h2>Notices</h2>
+  <div id="notices"></div>
+  
+  <script type="module" src="script.js"></script>
+</body>
+</html>
