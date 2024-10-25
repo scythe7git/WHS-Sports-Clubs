@@ -2,7 +2,7 @@
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: #ffffff;
 }
 
 h1, h2 {
@@ -30,7 +30,7 @@ input, select {
 
 button {
   padding: 10px 15px;
-  background-color: #5cb85c;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
@@ -42,7 +42,7 @@ button:hover {
 }
 
 .notice {
-  background-color: #fff;
+  background-color: #E9ECEF;
   padding: 15px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
