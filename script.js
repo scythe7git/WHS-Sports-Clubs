@@ -59,69 +59,74 @@ function convertTimeTo12Hour(time) {
 
 // Function to post a new notice to Firestore
 document.getElementById('addNoticeForm').addEventListener('submit', async (e) => {
-  e.preventDefault(); // Prevent form submission
+    e.preventDefault(); // Prevent form submission
 
-  const sport = document.getElementById('sport').value;
-  const category = document.getElementById('category').value;
-  const team = document.getElementById('team').value;
-  const time = document.getElementById('time').value;
-  const location = document.getElementById('location').value;
+    const sport = document.getElementById('sport').value;
+    const category = document.getElementById('category').value;
+    const team = document.getElementById('team').value;
+    const time = document.getElementById('time').value;
+    const date = document.getElementById('date').value; // Get date value
+    const location = document.getElementById('location').value;
+    const notes = document.getElementById('notes').value; // Get notes value
 
-  if (!sport || !category || !team || !time || !location) {
-    alert('Please fill in all fields.');
-    return;
-  }
+    if (!sport || !category || !team || !time || !date || !location) {
+        alert('Please fill in all fields.');
+        return;
+    }
 
-  const notice = { sport, category, team, time, location };
+    const notice = { sport, category, team, time, date, location, notes }; // Include date and notes
 
-  try {
-    await addDoc(collection(db, 'notices'), notice);
-    console.log('Notice added to Firestore');
-    displayNotices();
-  } catch (error) {
-    console.error('Error adding notice: ', error);
-  }
+    try {
+        await addDoc(collection(db, 'notices'), notice);
+        console.log('Notice added to Firestore');
+        displayNotices();
+    } catch (error) {
+        console.error('Error adding notice: ', error);
+    }
 });
 
 // Display notices from Firestore
 async function displayNotices() {
-  const noticesDiv = document.getElementById('notices');
-  noticesDiv.innerHTML = ''; // Clear current notices
+    const noticesDiv = document.getElementById('notices');
+    noticesDiv.innerHTML = ''; // Clear current notices
 
-  try {
-    const querySnapshot = await getDocs(collection(db, 'notices'));
+    try {
+        const querySnapshot = await getDocs(collection(db, 'notices'));
 
-    if (querySnapshot.empty) {
-      noticesDiv.innerHTML = '<p>No notices available.</p>'; // Show a message if there are no notices
-    } else {
-      querySnapshot.forEach(doc => {
-        const notice = doc.data();
-        const formattedTime = convertTimeTo12Hour(notice.time);
+        if (querySnapshot.empty) {
+            noticesDiv.innerHTML = '<p>No notices available.</p>'; // Show a message if there are no notices
+        } else {
+            querySnapshot.forEach(doc => {
+                const notice = doc.data();
+                const formattedTime = convertTimeTo12Hour(notice.time);
+                const formattedDate = notice.date; // Display the date
 
-        const noticeDiv = document.createElement('div');
-        noticeDiv.classList.add('notice');
-        noticeDiv.innerHTML = `
-          <p><strong>Sport:</strong> ${notice.sport}</p>
-          <p><strong>Category:</strong> ${notice.category}</p>
-          <p><strong>Team:</strong> ${notice.team}</p>
-          <p><strong>Time:</strong> ${formattedTime}</p>
-          <p><strong>Location:</strong> ${notice.location}</p>
-        `;
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice');
+                noticeDiv.innerHTML = `
+                    <p><strong>Sport:</strong> ${notice.sport}</p>
+                    <p><strong>Category:</strong> ${notice.category}</p>
+                    <p><strong>Team:</strong> ${notice.team}</p>
+                    <p><strong>Time:</strong> ${formattedTime}</p>
+                    <p><strong>Date:</strong> ${formattedDate}</p> <!-- Show date -->
+                    <p><strong>Location:</strong> ${notice.location}</p>
+                    <p><strong>Notes:</strong> ${notice.notes}</p> <!-- Show notes -->
+                `;
 
-        if (isLoggedIn) {
-          const deleteBtn = document.createElement('button');
-          deleteBtn.textContent = 'Delete';
-          deleteBtn.classList.add('delete-btn');
-          deleteBtn.addEventListener('click', () => deleteNotice(doc.id));
-          noticeDiv.appendChild(deleteBtn);
+                if (isLoggedIn) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.addEventListener('click', () => deleteNotice(doc.id));
+                    noticeDiv.appendChild(deleteBtn);
+                }
+
+                noticesDiv.appendChild(noticeDiv);
+            });
         }
-
-        noticesDiv.appendChild(noticeDiv);
-      });
+    } catch (error) {
+        console.error('Error fetching notices: ', error);
     }
-  } catch (error) {
-    console.error('Error fetching notices: ', error);
-  }
 }
 
 // Delete notice from Firestore
