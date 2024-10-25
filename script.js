@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,29 +16,23 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const db = getFirestore(firebase);
-
-let isLoggedIn = false;
-
-// Pre-defined usernames and passwords
-const users = [
-  { username: 'teacher1', password: 'pass1' },
-  { username: 'teacher2', password: 'pass2' },
-];
+const auth = getAuth();
 
 // Login functionality
-document.getElementById('login-btn').addEventListener('click', () => {
+document.getElementById('login-btn').addEventListener('click', async () => {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
-  const user = users.find(u => u.username === username && u.password === password);
-
-  if (user) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, username, password);
+    // Successful login
     isLoggedIn = true;
     document.getElementById('login-section').style.display = 'none';
     document.getElementById('notice-form').style.display = 'block';
     displayNotices();  // Display notices after login
-  } else {
+  } catch (error) {
     document.getElementById('login-message').textContent = 'Invalid credentials';
+    console.error('Error logging in: ', error);
   }
 });
 
