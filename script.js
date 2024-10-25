@@ -1,4 +1,4 @@
-// Import the functions you need from the SDKs
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
@@ -14,8 +14,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firestore
 const db = getFirestore(app);
 
 let isLoggedIn = false;
@@ -35,11 +33,11 @@ document.getElementById('login-btn').addEventListener('click', () => {
 
   if (user) {
     isLoggedIn = true;
-    document.getElementById('login-form').classList.add('hidden');
-    document.getElementById('notice-form').classList.remove('hidden');
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('notice-form').style.display = 'block';
     displayNotices();  // Display notices after login
   } else {
-    alert('Invalid credentials');
+    document.getElementById('login-message').textContent = 'Invalid credentials';
   }
 });
 
@@ -62,7 +60,9 @@ function convertTimeTo12Hour(time) {
 }
 
 // Function to post a new notice to Firestore
-document.getElementById('post-notice-btn').addEventListener('click', async () => {
+document.getElementById('addNoticeForm').addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent form submission
+
   const sport = document.getElementById('sport').value;
   const category = document.getElementById('category').value;
   const team = document.getElementById('team').value;
@@ -91,7 +91,6 @@ async function displayNotices() {
   noticesDiv.innerHTML = ''; // Clear current notices
 
   const querySnapshot = await getDocs(collection(db, 'notices'));
-
   querySnapshot.forEach(doc => {
     const notice = doc.data();
 
@@ -111,6 +110,7 @@ async function displayNotices() {
     if (isLoggedIn) {
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = 'Delete';
+      deleteBtn.classList.add('delete-btn');
       deleteBtn.addEventListener('click', () => deleteNotice(doc.id));
       noticeDiv.appendChild(deleteBtn);
     }
