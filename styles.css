@@ -12,7 +12,7 @@ h1, h2 {
 
 form {
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: #fff; /* Form background color */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,7 @@ button:hover {
 }
 
 .delete-btn:hover {
-  background-color: darkred;
+  background-color: darkred; /* Hover state for delete button */
 }
 
 #login-section {
@@ -69,6 +69,6 @@ button:hover {
 }
 
 #login-message {
-  color: red;
+  color: red; /* Color for login message */
   font-weight: bold;
 }
