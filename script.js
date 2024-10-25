@@ -16,15 +16,17 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const db = getFirestore(firebase);
-const auth = getAuth();
+const auth = getAuth(firebase);
+
+let isLoggedIn = false;
 
 // Login functionality
 document.getElementById('login-btn').addEventListener('click', async () => {
-  const username = document.getElementById('username').value;
+  const email = document.getElementById('username').value; // Use email input as username
   const password = document.getElementById('password').value;
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, username, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
     // Successful login
     isLoggedIn = true;
     document.getElementById('login-section').style.display = 'none';
