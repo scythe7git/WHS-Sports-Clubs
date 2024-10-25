@@ -62,30 +62,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Function to post a new notice to Firestore
-  document.getElementById('addNoticeForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent form submission
+  const addNoticeForm = document.getElementById('addNoticeForm');
+  if (addNoticeForm) {
+    addNoticeForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent form submission
 
-    const sport = document.getElementById('sport').value;
-    const category = document.getElementById('category').value;
-    const team = document.getElementById('team').value;
-    const time = document.getElementById('time').value;
-    const location = document.getElementById('location').value;
+      const sport = document.getElementById('sport').value;
+      const category = document.getElementById('category').value;
+      const team = document.getElementById('team').value;
+      const time = document.getElementById('time').value;
+      const location = document.getElementById('location').value;
 
-    if (!sport || !category || !team || !time || !location) {
-      alert('Please fill in all fields.');
-      return;
-    }
+      if (!sport || !category || !team || !time || !location) {
+        alert('Please fill in all fields.');
+        return;
+      }
 
-    const notice = { sport, category, team, time, location };
+      const notice = { sport, category, team, time, location };
 
-    try {
-      await addDoc(collection(db, 'notices'), notice);
-      console.log('Notice added to Firestore');
-      displayNotices();
-    } catch (error) {
-      console.error('Error adding notice: ', error);
-    }
-  });
+      try {
+        await addDoc(collection(db, 'notices'), notice);
+        console.log('Notice added to Firestore');
+        displayNotices();
+      } catch (error) {
+        console.error('Error adding notice: ', error);
+      }
+    });
+  }
 
   // Display notices from Firestore
   async function displayNotices() {
