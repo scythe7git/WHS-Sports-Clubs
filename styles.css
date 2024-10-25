@@ -22,7 +22,7 @@ label {
   font-weight: bold;
 }
 
-input, select {
+input, select, textarea { /* Add textarea to apply the same styles */
   padding: 8px;
   margin: 8px 0;
   width: 100%;
